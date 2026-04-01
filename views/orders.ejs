@@ -1,0 +1,49 @@
+  <%-include('layouts/header')-%>
+  <%-include('layouts/nav')-%>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Postal Code</th>
+          <th>Lunch</th>
+          <th>Ticket(s)</th>
+          <th>Campus</th>
+          <th>Sub</th>
+          <th>Tax</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (typeof(datas) != 'undefined') {
+          datas.forEach((order) => { %>
+            <tr>
+              <td> <%=order.name %> </td>
+              <td> <%=order.email %> </td>
+              <td> <%=order.phone %> </td>
+              <td> <%=order.postcode %> </td>
+              <td> <%=order.lunch %> </td>
+              <td> <%=order.tickets %> </td>
+              <td> <%=order.campus %> </td>
+              <td> <%=order.sub %> </td>
+              <td> <%=order.tax %> </td>
+              <td> <%=order.total %> </td>
+            </tr>
+          
+          <% })
+        } %>
+      </tbody>
+    </table>
+
+  </main>
+
+  <%-include('layouts/footer')-%>
+
+
+
+
+
+
