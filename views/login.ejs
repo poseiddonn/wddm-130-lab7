@@ -1,0 +1,47 @@
+<%-include('layouts/header')-%> <%-include('layouts/nav')-%>
+
+<% 
+var userErr="", passErr="";
+if (typeof(errors)!='undefined'){
+  for (error of errors) {
+    if(error.path=="uName") {
+      userErr = error.msg;
+    } else if (error.path=="pword"){
+      passErr=error.msg;
+    }
+  }
+}
+%>
+
+<main class="loggin">
+  <form name="myform" method="Post" action="/login">
+    <fieldset>
+      <legend>Login</legend>
+      <div>
+        <label>User Name</label>
+        <input id="uName" placeholder="Username" type="text" name="uName" />
+        <p id="error"><%=userErr%></p>
+      </div>
+      <div>
+        <label>Password</label>
+        <input
+          id="pword"
+          placeholder="Password"
+          type="password"
+          name="pword"
+          
+        />
+        <p id="error"><%=passErr%></p>
+      </div>
+      <div>
+        <input type="submit" value="Submit"/>
+        <input type="reset" value="Reset"/>
+      </div>
+      <% if (typeof(loginError) != 'undefined') {%>
+      <p id="error"><%=loginError%></p>
+      <%}%>
+    </fieldset>
+  </form>
+</main>
+
+<%-include('layouts/footer')-%>

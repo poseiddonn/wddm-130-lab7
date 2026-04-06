@@ -3,6 +3,9 @@ const path = require("path");
 const { check, validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 
+var session = require("express-session");
+const { name } = require("ejs");
+
 const Order = mongoose.model("Order", {
   name: String,
   email: String,
@@ -16,7 +19,20 @@ const Order = mongoose.model("Order", {
   total: Number,
 });
 
+const Admin = mongoose.model("Admin", {
+  username: String,
+  password: String,
+});
+
 const app = express();
+
+app.use(
+  session({
+    secret: "mysecret",
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
 
 mongoose.connect(
   "mongodb+srv://myUser:poseidon@cluster0.yozwd4a.mongodb.net/CollegeOrder",
@@ -135,7 +151,6 @@ app.post(
         .catch((err) => {
           console.log(err);
         });
-
     } else {
       //errors there
       res.render("form", { errors: errors.array() });
@@ -144,13 +159,61 @@ app.post(
 );
 
 app.get("/orders", (req, res) => {
-  Order.find({})
-    .then((data) => {
-      res.render("orders", { datas: data });
-    })
-    .catch((err) => {
-      console.log("failed to fetch data");
-    });
+  if (req.session.loggedIn) {
+    Order.find({})
+      .then((data) => {
+        res.render("orders", {
+          datas: data,
+          logged: { name: req.session.user, status: req.session.loggedIn },
+        });
+      })
+      .catch((err) => {
+        console.log("failed to fetch data");
+      });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
+
+app.post(
+  "/login",
+  [
+    check("uName", "user field empty").notEmpty(),
+    check("pword", "password field empty").notEmpty(),
+  ],
+  (req, res) => {
+    var errors = validationResult(req);
+    if (errors.isEmpty()) {
+      Admin.findOne({ username: req.body.uName })
+        .then((data) => {
+          if (data == null || data.password != req.body.pword) {
+            res.render("login", { loginError: "incorrect" });
+          } else {
+            req.session.loggedIn = true;
+            req.session.user = data.username;
+            // res.render("orders", {
+            //   logged: { name: req.session.user, status: req.session.loggedIn },
+            // });
+            console.log("success");
+            res.redirect("/orders");
+          }
+        })
+        .catch((err) => {
+          console.log("err");
+        });
+    } else {
+      res.render("login", { errors: errors.array() });
+    }
+  },
+);
+
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/login");
 });
 
 app.listen(3000, () => {

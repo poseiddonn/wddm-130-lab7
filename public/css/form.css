@@ -145,3 +145,27 @@ table tbody tr:nth-child(even) {
 table tbody tr:hover {
   background-color: #04527d;
 }
+
+header p {
+  padding: 0px;
+}
+
+header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loggin {
+  margin: 0px auto;
+  width: 600px;
+  display: flex;
+  /* height: 100vh; */
+  justify-content: center;
+  /* align-items: center; */
+}
+
+/* .loggin form div label {
+  display: inline-block;
+  width: 150px;
+} */
+
