@@ -26,13 +26,18 @@
               <td> <%=order.phone %> </td>
               <td> <%=order.postcode %> </td>
               <td> <%=order.lunch %> </td>
-              <td> <%=order.tickets %> </td>
+              <td> <%=order.ticket %> </td>
               <td> <%=order.campus %> </td>
               <td> <%=order.sub %> </td>
               <td> <%=order.tax %> </td>
               <td> <%=order.total %> </td>
+              <td>
+                <a href="/update/<%=order._id%>" class="btn btn-update">Update</a>
+              </td>
+              <td>
+                <a href="/delete/<%=order._id%>" class="btn btn-delete">Delete</a>
+              </td>
             </tr>
-          
           <% })
         } %>
       </tbody>
@@ -41,9 +46,3 @@
   </main>
 
   <%-include('layouts/footer')-%>
-
-
-
-
-
-

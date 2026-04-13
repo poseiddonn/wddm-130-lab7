@@ -211,6 +211,110 @@ app.post(
   },
 );
 
+app.get("/update/:id", (req, res) => {
+  var id = req.params.id;
+
+  Order.findOne({ _id: id })
+    .then((data) => {
+      if (data == null) return res.redirect("/orders");
+      res.render("update", {
+        order: data,
+        logged: { name: req.session.user, status: req.session.loggedIn },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/orders");
+    });
+});
+
+app.post(
+  "/update/:id",
+  [
+    check("name", "Name is Empty").notEmpty(),
+    check("email", "Not a valid Email").isEmail(),
+    check("tickets", "Ticket Not Selected")
+      .notEmpty()
+      .custom((value) => {
+        if (isNaN(value)) throw Error("This is not a number");
+        else if (value <= 0) throw Error("This number is less than 0");
+        else return true;
+      }),
+    check("campus", "Campus Not Selected").notEmpty(),
+    check("lunch", "Select Yes/No for Lunch").notEmpty(),
+    check("postcode", "Invalid Post Code Format").matches(
+      /^[a-zA-Z]\d[a-zA-Z]\s\d[a-zA-Z]\d$/,
+    ),
+    check("phone", "Invalid phone Number").matches(
+      /^\d{3}(\s|-)\d{3}(\s|-)\d{4}$/,
+    ),
+    check("lunch").custom((value, { req }) => {
+      if (value == "yes" && req.body.tickets < 3)
+        throw Error("Must buy 3 or more tickets to have a lunch");
+      else return true;
+    }),
+  ],
+  (req, res) => {
+    if (!req.session.loggedIn) return res.redirect("/login");
+
+    const errors = validationResult(req);
+    var id = req.params.id;
+
+    if (!errors.isEmpty()) {
+      Order.findOne({ _id: id }).then((data) => {
+        res.render("update", {
+          order: data,
+          errors: errors.array(),
+          logged: { name: req.session.user, status: req.session.loggedIn },
+        });
+      });
+      return;
+    }
+
+    var tickets = req.body.tickets;
+    var lunch = req.body.lunch;
+    var cost = 100 * tickets;
+    if (lunch == "yes") cost += 60;
+    var tax = cost * 0.13;
+    var total = cost + tax;
+
+    Order.findOneAndUpdate(
+      { _id: id },
+      {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        postcode: req.body.postcode,
+        lunch: lunch,
+        ticket: tickets,
+        campus: req.body.campus,
+        sub: cost.toFixed(2),
+        tax: tax.toFixed(2),
+        total: total.toFixed(2),
+      },
+      { new: true },
+    )
+      .then((data) => {
+        res.redirect("/orders");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.redirect("/orders");
+      });
+  },
+);
+
+app.get("/delete/:id", (req, res) => {
+  var id = req.params.id;
+
+  Order.findOneAndDelete({ _id: id }).then((data) => {
+    if (data != null) {
+      res.redirect("/orders");
+    }
+  });
+  // console.log(id);
+});
+
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/login");

@@ -1,0 +1,53 @@
+  <%-include('layouts/header')-%>
+  <%-include('layouts/nav')-%>
+  
+  <section class="w50">
+    <form name="update" method="Post" action="/update/<%=order._id%>" >
+      <label>Name</label>
+      <input id="name" placeholder="First Last" type="text" name="name" value="<%=order.name%>"><br/>
+
+      <label>Email</label>
+      <input id="email" placeholder="email@domain.com" type="email" name="email" value="<%=order.email%>"><br/>
+
+      <label>Phone</label>
+      <input id="phone" placeholder="123-123-1234" type="phone" name="phone" value="<%=order.phone%>"><br/>
+
+      <label>Post Code</label>
+      <input id="postcode" placeholder="X9X 9X9" type="postcode" name="postcode" value="<%=order.postcode%>"><br/>
+      
+      <label>Will you have lunch?</label>
+      <input type="radio" value="yes" name="lunch" <%=order.lunch=='yes'?'checked':''%> >Yes
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" value="no" name="lunch" <%=order.lunch=='no'?'checked':''%> >No
+      <br/>
+      
+      <label>Number of Tickets</label>
+      <input id="tickets" placeholder="Num of Tickets" type="text" name="tickets" value="<%=order.tickets%>">
+
+      
+      <br/>
+
+      <label>Which Campus?</label>
+      <select name="campus" id="campus">
+          <option value="">----- Select -----</option>
+          <option value="Doon" <%=order.campus=='Doon'?'selected':''%>>Doon</option>
+          <option value="Waterloo" <%=order.campus=='Waterloo'?'selected':''%>>Waterloo</option>
+          <option value="Cambridge" <%=order.campus=='Cambridge'?'selected':''%>>Cambridge</option>
+      </select>
+
+      <br/><br/>
+
+      <input type="submit" value="Submit">
+      <p id="errors">
+        <% if (typeof(errors) != 'undefined'){ 
+          for(var error of errors){%>
+            <h3><%=error.msg%></h3>
+
+        <%}}%>
+
+      </p>
+    </form>  
+</section>
+<div class="clear"></div>
+
+  <%-include('layouts/footer')-%>

@@ -148,6 +148,7 @@ table tbody tr:hover {
 
 header p {
   padding: 0px;
+  color: white;
 }
 
 header {
@@ -159,13 +160,116 @@ header {
   margin: 0px auto;
   width: 600px;
   display: flex;
-  /* height: 100vh; */
   justify-content: center;
-  /* align-items: center; */
 }
 
-/* .loggin form div label {
-  display: inline-block;
-  width: 150px;
-} */
+.loggin form {
+  width: 350px;
+}
 
+.loggin fieldset {
+  border: 3px solid white;
+  border-radius: 16px;
+  padding: 24px 30px 30px;
+  background-color: #0781b2;
+  box-shadow: 0 0 10px #2c2c2c;
+}
+
+.loggin legend {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  padding: 0 10px;
+}
+
+.loggin form div {
+  margin-bottom: 14px;
+}
+
+.loggin form div label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 18px;
+  color: white;
+}
+
+.loggin form div input [type="text"],
+.loggin form div input [type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+  height: 36px;
+  font-size: 16px;
+  padding: 5px 10px;
+  font-family: "Kalam", cursive;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+
+}
+
+.loggin form div input[type="submit"],
+.loggin form div input[type="reset"] {
+  width: 48%;
+  font-size: 18px;
+  font-family: "Kalam", cursive;
+  border: 0;
+  padding: 10px;
+  height: 46px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.loggin form div input[type="submit"] {
+  background-color: #bc2990;
+  box-shadow: 4px 4px 0px #8c087a;
+  margin-right: 4%;
+}
+
+.loggin form div input[type="submit"]:active {
+  box-shadow: -4px -4px 0px #8c087a;
+}
+
+.loggin form div input[type="reset"] {
+  background-color: #555;
+  box-shadow: 4px 4px 0px #333;
+}
+
+.loggin form div input[type="reset"]:active {
+  box-shadow: -4px -4px 0px #333;
+}
+
+#error {
+  color: #ffe0f0;
+  font-size: 14px;
+  margin: 4px 0 0;
+  min-height: 18px;
+}
+
+/* Update / Delete buttons in orders table */
+.btn {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: "Kalam", cursive;
+  font-weight: bold;
+  color: white;
+  transition: opacity 0.15s;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn-update {
+  background-color: #0781b2;
+  border: 2px solid white;
+  box-shadow: 2px 2px 0px #045a80;
+}
+
+.btn-delete {
+  background-color: #bc2990;
+  border: 2px solid white;
+  box-shadow: 2px 2px 0px #8c087a;
+}
