@@ -3,6 +3,8 @@ const path = require("path");
 const { check, validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 
+const MongoStore = require("connect-mongo");
+
 var session = require("express-session");
 const { name } = require("ejs");
 
@@ -31,12 +33,20 @@ app.use(
     secret: "mysecret",
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://myUser:poseidon@cluster0.yozwd4a.mongodb.net/CollegeOrder",
+    }),
+    cookie: {
+      secure: true,
+      sameSite: "none",
+    },
   }),
 );
 
-mongoose.connect(
-  "mongodb+srv://myUser:poseidon@cluster0.yozwd4a.mongodb.net/CollegeOrder",
-);
+// mongoose.connect(
+
+// );
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
